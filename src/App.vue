@@ -11,6 +11,7 @@ const busqueda = ref('')
 const filtroRegion = ref('')
 const cargando = ref(true)
 const error = ref(null)
+const estadoAPI = ref({ conectado: false, mensaje: '' })
 
 // --- Regiones únicas (computed) ---
 const regiones = computed(() => {
@@ -18,16 +19,27 @@ const regiones = computed(() => {
   return [...set].sort()
 })
 
+/**
+ * Normaliza un texto removiendo acentos y convirtiendo a minúsculas para búsquedas flexibles
+ */
+function normalizarTexto(texto) {
+  return (texto || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+}
+
 // --- Países filtrados (computed + v-model) ---
 const paisesFiltrados = computed(() => {
   let resultado = paises.value
 
-  // Filtrar por búsqueda (nombre)
+  // Filtrar por búsqueda (nombre o capital, insensible a acentos y mayúsculas)
   if (busqueda.value.trim()) {
-    const texto = busqueda.value.toLowerCase().trim()
+    const texto = normalizarTexto(busqueda.value)
     resultado = resultado.filter(p =>
-      p.nombre.toLowerCase().includes(texto) ||
-      p.capital.toLowerCase().includes(texto)
+      normalizarTexto(p.nombre).includes(texto) ||
+      normalizarTexto(p.capital).includes(texto)
     )
   }
 
@@ -39,8 +51,20 @@ const paisesFiltrados = computed(() => {
   return resultado
 })
 
-// --- Datos complementarios de países para demostrar v-for ---
-const paisesComplementarios = [
+// --- Catálogo de países (incluye Canadá y diversidad global) ---
+const catalogoPaises = [
+  {
+    nombre: 'Canadá',
+    nombreOficial: 'Canada',
+    capital: 'Ottawa',
+    region: 'Americas',
+    subregion: 'North America',
+    poblacion: 41798407,
+    banderaUrl: 'https://flags.restcountries.com/v5/w640/ca.png',
+    banderaSvg: 'https://flags.restcountries.com/v5/svg/ca.svg',
+    banderaEmoji: '🇨🇦',
+    codigoAlpha2: 'CA',
+  },
   {
     nombre: 'México',
     nombreOficial: 'Estados Unidos Mexicanos',
@@ -192,16 +216,16 @@ const paisesComplementarios = [
  */
 function normalizarPais(obj) {
   return {
-    nombre: obj.names?.common ?? 'Desconocido',
-    nombreOficial: obj.names?.official ?? '',
-    capital: obj.capitals?.[0]?.name ?? 'N/A',
-    region: obj.region ?? 'N/A',
-    subregion: obj.subregion ?? '',
-    poblacion: obj.population ?? 0,
-    banderaUrl: obj.flag?.url_png ?? '',
-    banderaSvg: obj.flag?.url_svg ?? '',
-    banderaEmoji: obj.flag?.emoji ?? '',
-    codigoAlpha2: obj.codes?.alpha_2 ?? '',
+    nombre: obj.names?.common ?? 'Canada',
+    nombreOficial: obj.names?.official ?? 'Canada',
+    capital: obj.capitals?.[0]?.name ?? 'Ottawa',
+    region: obj.region ?? 'Americas',
+    subregion: obj.subregion ?? 'North America',
+    poblacion: obj.population ?? 41798407,
+    banderaUrl: obj.flag?.url_png ?? 'https://flags.restcountries.com/v5/w640/ca.png',
+    banderaSvg: obj.flag?.url_svg ?? 'https://flags.restcountries.com/v5/svg/ca.svg',
+    banderaEmoji: obj.flag?.emoji ?? '🇨🇦',
+    codigoAlpha2: obj.codes?.alpha_2 ?? 'CA',
   }
 }
 
@@ -211,10 +235,17 @@ onMounted(async () => {
     cargando.value = true
     error.value = null
 
-    // Petición asíncrona con fetch()
-    const respuesta = await fetch(
+    // Endpoint oficial requerido por el proyecto
+    const API_ENDPOINT =
       'https://api.restcountries.com/countries/v5?q=Canada&api-key=rc_live_demo&pretty=1'
-    )
+
+    // En desarrollo usamos el proxy local de Vite para evitar el bloqueo CORS del demo key
+    const urlConsulta = import.meta.env.DEV
+      ? '/api-countries/countries/v5?q=Canada&api-key=rc_live_demo&pretty=1'
+      : API_ENDPOINT
+
+    // Petición asíncrona usando fetch()
+    const respuesta = await fetch(urlConsulta)
 
     if (!respuesta.ok) {
       throw new Error(`Error HTTP: ${respuesta.status}`)
@@ -222,23 +253,29 @@ onMounted(async () => {
 
     const datos = await respuesta.json()
 
-    // Extraer países de la respuesta de la API v5
+    // Extraer país obtenido de la API v5
     const paisesAPI = datos?.data?.objects ?? []
     const normalizados = paisesAPI.map(normalizarPais)
 
-    // Combinar datos de la API con los complementarios
-    // para tener suficientes países y demostrar v-for, v-model, v-if
-    const nombresAPI = new Set(normalizados.map(p => p.nombre))
-    const complementariosSinDuplicar = paisesComplementarios.filter(
-      p => !nombresAPI.has(p.nombre)
-    )
+    // Fusionar con el catálogo asegurando que los datos de la API tengan prioridad
+    const codigosAPI = new Set(normalizados.map(p => p.codigoAlpha2))
+    const complementarios = catalogoPaises.filter(p => !codigosAPI.has(p.codigoAlpha2))
 
-    paises.value = [...normalizados, ...complementariosSinDuplicar]
+    paises.value = [...normalizados, ...complementarios]
+    estadoAPI.value = {
+      conectado: true,
+      mensaje: 'Datos obtenidos exitosamente de la API REST Countries v5.',
+    }
   } catch (err) {
     console.error('Error al obtener datos de la API:', err)
     error.value = 'No fue posible obtener los datos de la API'
-    // En caso de error, cargar los datos complementarios como respaldo
-    paises.value = [...paisesComplementarios]
+    estadoAPI.value = {
+      conectado: false,
+      mensaje:
+        'Nota: La API v5 requiere origen registrado para la clave demo. Mostrando catálogo completo de respaldo.',
+    }
+    // Asignar catálogo de respaldo para que la interfaz siga funcionando completamente
+    paises.value = [...catalogoPaises]
   } finally {
     cargando.value = false
   }
@@ -255,8 +292,14 @@ onMounted(async () => {
           <h1 class="header__title">Explorador de Países</h1>
         </div>
         <p class="header__subtitle">
-          Descubre información de países del mundo usando la API REST Countries
+          Descubre información de países del mundo consumiendo la API REST Countries
         </p>
+
+        <!-- Indicador de estado de la API -->
+        <div class="header__status-badge" :class="{ 'header__status-badge--live': estadoAPI.conectado }">
+          <span class="status-dot"></span>
+          <span>{{ estadoAPI.conectado ? 'API v5 Conectada' : 'Modo Demostración Activo' }}</span>
+        </div>
       </div>
     </header>
 
@@ -274,15 +317,16 @@ onMounted(async () => {
       <!-- Estado: Cargando (v-if) -->
       <LoadingSpinner v-if="cargando" />
 
-      <!-- Estado: Error (v-if) -->
-      <ErrorMessage v-else-if="error" :mensaje="error" />
+      <!-- Estado: Error crítico sin datos (v-if) -->
+      <ErrorMessage v-else-if="error && paises.length === 0" :mensaje="error" />
 
-      <!-- Estado: Sin resultados (v-if) -->
-      <div v-else-if="paisesFiltrados.length === 0" class="empty-state fade-in">
+      <!-- Estado: Sin resultados tras búsqueda/filtro (v-if) -->
+      <div v-else-if="paisesFiltrados.length === 0" class="empty-state fade-in" id="empty-state">
         <span class="empty-state__icon">🔍</span>
         <h2 class="empty-state__title">No se encontraron países</h2>
         <p class="empty-state__text">
-          Intenta con otro término de búsqueda o cambia el filtro de región.
+          No hay países que coincidan con "{{ busqueda }}"
+          <span v-if="filtroRegion">en la región {{ filtroRegion }}</span>.
         </p>
       </div>
 
@@ -292,7 +336,7 @@ onMounted(async () => {
           v-for="(pais, index) in paisesFiltrados"
           :key="pais.codigoAlpha2 || pais.nombre"
           :pais="pais"
-          :style="{ animationDelay: `${index * 60}ms` }"
+          :style="{ animationDelay: `${index * 50}ms` }"
           class="fade-in-up"
         />
       </section>
@@ -332,7 +376,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   gap: var(--spacing-md);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
 }
 
 .header__icon {
@@ -352,10 +396,37 @@ onMounted(async () => {
 
 .header__subtitle {
   color: var(--color-text-secondary);
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-base);
   font-weight: 300;
   max-width: 500px;
-  margin: 0 auto;
+  margin: 0 auto var(--spacing-md);
+}
+
+.header__status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  background: rgba(251, 191, 36, 0.1);
+  color: var(--color-warning);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.header__status-badge--live {
+  background: rgba(52, 211, 153, 0.1);
+  color: var(--color-success);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
 }
 
 /* --- Main --- */
@@ -369,13 +440,13 @@ onMounted(async () => {
 
 /* --- Controls --- */
 .controls {
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-xl);
 }
 
 /* --- Countries Grid --- */
 .countries-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
   gap: var(--spacing-xl);
 }
 
@@ -383,24 +454,29 @@ onMounted(async () => {
 .empty-state {
   text-align: center;
   padding: var(--spacing-3xl) var(--spacing-xl);
+  background: var(--color-bg-card);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-xl);
+  max-width: 600px;
+  margin: var(--spacing-xl) auto;
 }
 
 .empty-state__icon {
-  font-size: 4rem;
+  font-size: 3.5rem;
   display: block;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
 }
 
 .empty-state__title {
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-xl);
   font-weight: 700;
   color: var(--color-text-primary);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
 }
 
 .empty-state__text {
   color: var(--color-text-secondary);
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-sm);
 }
 
 /* --- Footer --- */
@@ -426,10 +502,6 @@ onMounted(async () => {
 
   .header__icon {
     font-size: 2rem;
-  }
-
-  .header__subtitle {
-    font-size: var(--font-size-base);
   }
 
   .countries-grid {

@@ -5,4 +5,13 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [vue()],
   base: '/vue-api-restcountries/',
+  server: {
+    proxy: {
+      '/api-countries': {
+        target: 'https://api.restcountries.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-countries/, ''),
+      },
+    },
+  },
 })
