@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: var(--color-bg-primary);
+      font-family: 'Inter', sans-serif;
+      padding: 2rem;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .header__brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .header__title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .header__subtitle {
+      color: #94a3b8;
+      font-size: 1rem;
+    }
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      background: rgba(17, 24, 39, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      border-radius: 1.5rem;
+      backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 500px;
+    }
+    .loading__spinner {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin-bottom: 1.5rem;
+    }
+    .loading__ring {
+      position: absolute;
+      inset: 0;
+      border: 3px solid rgba(148, 163, 184, 0.1);
+      border-top-color: #6366f1;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    .loading__globe {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+    .loading__text {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 0.25rem;
+    }
+    .loading__subtext {
+      color: #64748b;
+      font-size: 0.875rem;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header__brand">
+      <span style="font-size: 2.5rem;">🌍</span>
+      <h1 class="header__title">Explorador de Países</h1>
+    </div>
+    <p class="header__subtitle">Descubre información de países del mundo consumiendo la API REST Countries</p>
+  </div>
+  <div class="loading">
+    <div class="loading__spinner">
+      <div class="loading__ring"></div>
+      <span class="loading__globe">🌍</span>
+    </div>
+    <h2 class="loading__text">Cargando países...</h2>
+    <p class="loading__subtext">Obteniendo datos de la API REST Countries</p>
+  </div>
+</body>
+</html>

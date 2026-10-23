@@ -1,0 +1,990 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Evidencias de Cumplimiento – Segundo Proyecto Unidad 3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: letter portrait;
+      margin: 1.8cm 1.6cm 1.8cm 1.6cm;
+      @bottom-right {
+        content: counter(page);
+        font-family: 'Inter', sans-serif;
+        font-size: 9pt;
+        color: #64748b;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.55;
+      font-size: 10.5pt;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      page-break-after: always;
+      break-after: page;
+      height: 100%;
+      min-height: 23cm;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      position: relative;
+    }
+
+    .page:last-child {
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    /* --- Cover Page --- */
+    .cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 23cm;
+      padding: 2cm 1cm;
+    }
+
+    .cover__badge {
+      display: inline-block;
+      background: #eff6ff;
+      color: #2563eb;
+      font-weight: 700;
+      font-size: 11pt;
+      padding: 6px 18px;
+      border-radius: 9999px;
+      margin-bottom: 24px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border: 1px solid #bfdbfe;
+    }
+
+    .cover__title {
+      font-size: 26pt;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.25;
+      margin-bottom: 14px;
+      letter-spacing: -0.02em;
+    }
+
+    .cover__subtitle {
+      font-size: 15pt;
+      color: #475569;
+      font-weight: 400;
+      margin-bottom: 36px;
+      max-width: 600px;
+    }
+
+    .cover__divider {
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #6366f1, #8b5cf6);
+      border-radius: 2px;
+      margin: 0 auto 36px;
+    }
+
+    .cover__card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 24px 32px;
+      max-width: 580px;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    .cover__card-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 14px;
+    }
+
+    .cover__card-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .cover__card-label {
+      font-size: 9pt;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .cover__card-value {
+      font-size: 11pt;
+      color: #0f172a;
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    .cover__card-value a {
+      color: #4f46e5;
+      text-decoration: none;
+    }
+
+    .cover__footer {
+      font-size: 9.5pt;
+      color: #94a3b8;
+      margin-top: auto;
+    }
+
+    /* --- Standard Evidence Pages --- */
+    .page__header {
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .page__header-tag {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #6366f1;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .page__header-project {
+      font-size: 8.5pt;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .evidence__title {
+      font-size: 17pt;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .evidence__type-badge {
+      display: inline-block;
+      font-size: 8.5pt;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+
+    .badge--ui {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .badge--code {
+      background: #fdf2f8;
+      color: #be185d;
+      border: 1px solid #fbcfe8;
+    }
+
+    .evidence__subtitle {
+      font-size: 10pt;
+      color: #64748b;
+      margin-bottom: 16px;
+    }
+
+    /* --- Capture Wrapper (Single Capture per Page Rule) --- */
+    .evidence__capture-box {
+      background: #0f172a;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 8px;
+      margin-bottom: 18px;
+      box-shadow: 0 6px 14px -3px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-height: 12.8cm;
+      overflow: hidden;
+    }
+
+    .evidence__img {
+      max-width: 100%;
+      max-height: 12.4cm;
+      object-fit: contain;
+      border-radius: 6px;
+      display: block;
+    }
+
+    /* --- Explanation Section --- */
+    .evidence__explanation {
+      background: #f8fafc;
+      border-left: 4px solid #6366f1;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin-top: auto;
+    }
+
+    .evidence__explanation-title {
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .evidence__p {
+      font-size: 9.5pt;
+      color: #334155;
+      line-height: 1.5;
+      margin-bottom: 6px;
+      text-align: justify;
+    }
+
+    .evidence__p:last-child {
+      margin-bottom: 0;
+    }
+
+    .evidence__p strong {
+      color: #0f172a;
+    }
+
+    .evidence__p code {
+      font-family: 'Fira Code', monospace;
+      font-size: 8.5pt;
+      background: #e2e8f0;
+      padding: 1px 5px;
+      border-radius: 4px;
+      color: #0f172a;
+    }
+
+    .page__footer {
+      margin-top: 14px;
+      padding-top: 8px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 8pt;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================
+       PORTADA
+       ======================================================== -->
+  <div class="page cover">
+    <span class="cover__badge">Evidencia de Aprendizaje – Unidad 3</span>
+    <h1 class="cover__title">Segundo Proyecto: Consumo de API con Vue 3</h1>
+    <p class="cover__subtitle">Documento de Evidencias de Cumplimiento de Especificaciones y Rúbrica Técnica</p>
+    <div class="cover__divider"></div>
+
+    <div class="cover__card">
+      <div class="cover__card-item">
+        <span class="cover__card-label">🔗 Repositorio en GitHub (Código Fuente)</span>
+        <span class="cover__card-value">
+          <a href="https://github.com/hownioni/vue-api-restcountries" target="_blank">https://github.com/hownioni/vue-api-restcountries</a>
+        </span>
+      </div>
+      <div class="cover__card-item">
+        <span class="cover__card-label">🌐 Sitio Publicado en GitHub Pages</span>
+        <span class="cover__card-value">
+          <a href="https://hownioni.github.io/vue-api-restcountries/" target="_blank">https://hownioni.github.io/vue-api-restcountries/</a>
+        </span>
+      </div>
+      <div class="cover__card-item">
+        <span class="cover__card-label">📡 API Consumida</span>
+        <span class="cover__card-value">REST Countries API v5 (Endpoint oficial con clave demo)</span>
+      </div>
+      <div class="cover__card-item">
+        <span class="cover__card-label">🛠️ Tecnologías Empleadas</span>
+        <span class="cover__card-value">Vue 3 (Composition API, &lt;script setup&gt;), Vite, CSS Vanilla Moderno</span>
+      </div>
+    </div>
+
+    <p class="cover__footer">Octubre 2026 • Ingenierías / Tecnologías Web</p>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 1 - FETCH (INTERFAZ)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 1 • Consumo de API</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Consumo de API usando fetch()
+      <span class="evidence__type-badge badge--ui">Interfaz de Usuario</span>
+    </h2>
+    <p class="evidence__subtitle">Demostración de datos obtenidos en vivo desde la API REST Countries v5.</p>
+
+    <div class="evidence__capture-box">
+      <img src="01_interfaz_api_v5.png" alt="Captura Interfaz Consumo de API" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        La aplicación web consume de forma asíncrona la información de países mediante la función nativa <code>fetch()</code> conectándose directamente al endpoint oficial de la API REST Countries v5 (<code>https://api.restcountries.com/countries/v5?q=Canada&amp;api-key=rc_live_demo&amp;pretty=1</code>).
+      </p>
+      <p class="evidence__p">
+        Como se observa en la parte superior, el sistema incluye un indicador visual <strong>"● API v5 Conectada"</strong> que valida la comunicación exitosa con el servicio remoto y muestra de inmediato los datos de Canadá (bandera oficial en SVG/PNG, capital Ottawa, región Americas y población de 41,798,407 habitantes).
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 2</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 1 - FETCH (CÓDIGO)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 1 • Consumo de API</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Consumo de API usando fetch()
+      <span class="evidence__type-badge badge--code">Código Fuente</span>
+    </h2>
+    <p class="evidence__subtitle">Implementación de la llamada HTTP asíncrona con fetch() y procesamiento JSON.</p>
+
+    <div class="evidence__capture-box">
+      <img src="code_01_fetch.png" alt="Captura Código Consumo de API fetch" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        En el archivo <code>src/App.vue</code>, se realiza la petición asíncrona con <code>await fetch(urlConsulta)</code> hacia la dirección indicada en las instrucciones. La respuesta HTTP es evaluada mediante <code>respuesta.ok</code> para capturar oportunamente cualquier código de error del servidor.
+      </p>
+      <p class="evidence__p">
+        Posteriormente, el cuerpo de la respuesta se convierte a objeto JavaScript con <code>await respuesta.json()</code>, se extrae el arreglo <code>data.objects</code> y los campos son normalizados antes de asignarse a la variable reactiva <code>paises.value</code> para su posterior renderizado reactivo.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 3</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 2 - ONMOUNTED (INTERFAZ)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 2 • Ciclo de Vida</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Ejecución dentro de onMounted()
+      <span class="evidence__type-badge badge--ui">Interfaz de Usuario</span>
+    </h2>
+    <p class="evidence__subtitle">Carga automática de datos en el montaje inicial del componente raíz.</p>
+
+    <div class="evidence__capture-box">
+      <img src="01_interfaz_api_v5.png" alt="Captura Interfaz onMounted" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        Al abrir la aplicación por primera vez en el navegador, el usuario no requiere presionar ningún botón manual para consultar la API; el hook de ciclo de vida <code>onMounted()</code> desencadena automáticamente la petición asíncrona en cuanto el componente es montado en el DOM.
+      </p>
+      <p class="evidence__p">
+        Esto garantiza una experiencia de usuario fluida, cargando de inmediato los datos del país consultado en conjunto con el catálogo y calculando en tiempo real las regiones disponibles en el selector.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 4</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 2 - ONMOUNTED (CÓDIGO)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 2 • Ciclo de Vida</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Ejecución dentro de onMounted()
+      <span class="evidence__type-badge badge--code">Código Fuente</span>
+    </h2>
+    <p class="evidence__subtitle">Importación y ejecución de la función onMounted() desde Vue 3 Composition API.</p>
+
+    <div class="evidence__capture-box">
+      <img src="code_02_onmounted.png" alt="Captura Código onMounted" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        En <code>src/App.vue</code>, se importa el método <code>onMounted</code> directamente desde el paquete <code>vue</code>. Dentro del bloque <code>&lt;script setup&gt;</code>, se declara la función asíncrona que gestiona los estados de la aplicación (activando <code>cargando.value = true</code>).
+      </p>
+      <p class="evidence__p">
+        La primera llamada asíncrona a la API se ejecuta precisamente dentro de este hook, asegurando que el árbol de componentes ya esté disponible antes de actualizar el estado y concluir el proceso mediante la cláusula <code>finally</code>.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 5</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 3 - VARIABLES REACTIVAS (INTERFAZ)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 3 • Reactividad</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Variables reactivas con ref()
+      <span class="evidence__type-badge badge--ui">Interfaz de Usuario</span>
+    </h2>
+    <p class="evidence__subtitle">Actualización reactiva instantánea del contador y lista de países.</p>
+
+    <div class="evidence__capture-box">
+      <img src="05_interfaz_v_model_busqueda.png" alt="Captura Interfaz Variables Reactivas" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        La interfaz de usuario reacciona en tiempo real ante cualquier cambio en el estado de la aplicación. Al modificarse el texto de búsqueda, la variable reactiva se actualiza y recalcula dinámicamente el badge de <strong>"1 país encontrado"</strong>.
+      </p>
+      <p class="evidence__p">
+        Esta reactividad controlada por <code>ref()</code> y <code>computed()</code> permite que los cambios de datos se reflejen en la vista sin necesidad de recargar la página, ofreciendo una respuesta inmediata a las interacciones del usuario.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 6</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 3 - VARIABLES REACTIVAS (CÓDIGO)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 3 • Reactividad</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Variables reactivas con ref()
+      <span class="evidence__type-badge badge--code">Código Fuente</span>
+    </h2>
+    <p class="evidence__subtitle">Declaración de referencias reactivas ref() y propiedades computadas computed().</p>
+
+    <div class="evidence__capture-box">
+      <img src="code_03_ref.png" alt="Captura Código ref" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        Se implementaron referencias reactivas mediante <code>ref()</code> para almacenar el listado de países (<code>paises = ref([])</code>), el término de búsqueda ingresado (<code>busqueda = ref('')</code>), la región seleccionada (<code>filtroRegion = ref('')</code>) y el estado de carga (<code>cargando = ref(true)</code>).
+      </p>
+      <p class="evidence__p">
+        Asimismo, se utilizó <code>computed()</code> para derivar valores de manera reactiva, como el catálogo ordenado de regiones únicas sin duplicados y el filtro activo de países, optimizando el rendimiento de la aplicación.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 7</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 4 - V-FOR (INTERFAZ)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 4 • Directiva v-for</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Directiva v-for para renderizado de países
+      <span class="evidence__type-badge badge--ui">Interfaz de Usuario</span>
+    </h2>
+    <p class="evidence__subtitle">Visualización de las tarjetas de países generadas dinámicamente.</p>
+
+    <div class="evidence__capture-box">
+      <img src="02_interfaz_v_for.png" alt="Captura Interfaz v-for" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        La aplicación emplea la directiva <code>v-for</code> para iterar sobre el arreglo de países y renderizar una cuadrícula responsiva de tarjetas (cards). Cada tarjeta expone los 5 datos mínimos solicitados: <strong>Bandera</strong>, <strong>Nombre</strong>, <strong>Capital</strong>, <strong>Región</strong> y <strong>Población</strong> (además de la subregión y emoji oficial).
+      </p>
+      <p class="evidence__p">
+        Las cifras poblacionales son presentadas con formato numérico de millares legible (ej. 41,798,407 para Canadá y 128,900,000 para México), y las tarjetas cuentan con efectos visuales de elevación e iluminación al pasar el cursor.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 8</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 4 - V-FOR (CÓDIGO)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 4 • Directiva v-for</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Directiva v-for para renderizado de países
+      <span class="evidence__type-badge badge--code">Código Fuente</span>
+    </h2>
+    <p class="evidence__subtitle">Implementación de la iteración con v-for y pase de props al componente hijo.</p>
+
+    <div class="evidence__capture-box">
+      <img src="code_04_v_for.png" alt="Captura Código v-for" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        En el template de <code>src/App.vue</code>, la sección <code>countries-grid</code> utiliza <code>v-for="(pais, index) in paisesFiltrados"</code> para recorrer los países que cumplen con los criterios de búsqueda activos.
+      </p>
+      <p class="evidence__p">
+        Se vincula la llave única <code>:key="pais.codigoAlpha2 || pais.nombre"</code> para garantizar un óptimo rendimiento del Virtual DOM de Vue, pasando cada objeto de país como prop al componente modular <code>CountryCard.vue</code>.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 9</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 5 - V-IF CARGA (INTERFAZ)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 5 • Directiva v-if</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Indicador de carga con v-if
+      <span class="evidence__type-badge badge--ui">Interfaz de Usuario</span>
+    </h2>
+    <p class="evidence__subtitle">Estado de espera mostrado mientras se resuelve la petición asíncrona.</p>
+
+    <div class="evidence__capture-box">
+      <img src="08_interfaz_cargando.png" alt="Captura Interfaz Indicador de Carga" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        Durante el lapso en el que la promesa de <code>fetch()</code> se encuentra pendiente, la directiva <code>v-if="cargando"</code> renderiza de forma condicional el componente <code>LoadingSpinner.vue</code>.
+      </p>
+      <p class="evidence__p">
+        La interfaz despliega un anillo giratorio animado con el globo terráqueo y el mensaje explícito <strong>"Cargando países..."</strong>, informando al usuario que la aplicación está obteniendo los datos de la API REST Countries.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 10</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 5 - V-IF SIN RESULTADOS (INTERFAZ)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 5 • Directiva v-if</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Mensaje sin resultados con v-if
+      <span class="evidence__type-badge badge--ui">Interfaz de Usuario</span>
+    </h2>
+    <p class="evidence__subtitle">Manejo de estado condicional cuando la búsqueda no produce coincidencias.</p>
+
+    <div class="evidence__capture-box">
+      <img src="04_interfaz_sin_resultados.png" alt="Captura Interfaz Sin Resultados" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        Al introducir un término que no existe en el catálogo (por ejemplo <em>"Atlantis"</em>), la condición <code>v-else-if="paisesFiltrados.length === 0"</code> se activa instantáneamente, ocultando la cuadrícula de países.
+      </p>
+      <p class="evidence__p">
+        En su lugar, se presenta un contenedor elegante con icono de búsqueda y el mensaje <strong>"No se encontraron países"</strong> con sugerencias para que el usuario intente con otro término o región.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 11</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 5 - V-IF (CÓDIGO)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 5 • Directiva v-if</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Estructuras de control v-if, v-else-if y v-else
+      <span class="evidence__type-badge badge--code">Código Fuente</span>
+    </h2>
+    <p class="evidence__subtitle">Bloque condicional estructurado para la gestión reactiva de estados en el template.</p>
+
+    <div class="evidence__capture-box">
+      <img src="code_05_v_if.png" alt="Captura Código v-if" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        En el cuerpo principal de <code>App.vue</code>, se diseñó una cadena de control condicional completa: <code>v-if="cargando"</code> para el spinner de espera, <code>v-else-if="error &amp;&amp; paises.length === 0"</code> para fallas críticas, <code>v-else-if="paisesFiltrados.length === 0"</code> para filtros vacíos, y finalmente la cláusula <code>v-else</code> para mostrar la lista completa.
+      </p>
+      <p class="evidence__p">
+        Este patrón garantiza que únicamente se renderice el elemento correspondiente al estado real de la aplicación, evitando parpadeos o componentes vacíos en el DOM.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 12</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 6 - V-MODEL BÚSQUEDA (INTERFAZ)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 6 • Directiva v-model</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Filtrado por nombre usando v-model
+      <span class="evidence__type-badge badge--ui">Interfaz de Usuario</span>
+    </h2>
+    <p class="evidence__subtitle">Campo de búsqueda interactivo con enlace bidireccional de datos.</p>
+
+    <div class="evidence__capture-box">
+      <img src="05_interfaz_v_model_busqueda.png" alt="Captura Interfaz v-model búsqueda" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        El campo <code>&lt;input v-model="busqueda"&gt;</code> captura en tiempo real lo que el usuario escribe. Al ingresar <em>"Mex"</em>, el enlace bidireccional actualiza automáticamente la variable reactiva y filtra al instante únicamente la tarjeta de <strong>México</strong>.
+      </p>
+      <p class="evidence__p">
+        Adicionalmente, se incorporó un algoritmo de normalización de cadenas para que la búsqueda sea insensible a acentos y mayúsculas, permitiendo encontrar "México" sin importar si se escribe con o sin tilde.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 13</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 6 - V-MODEL REGIÓN (INTERFAZ)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 6 • Directiva v-model</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Filtrado por región usando v-model
+      <span class="evidence__type-badge badge--ui">Interfaz de Usuario</span>
+    </h2>
+    <p class="evidence__subtitle">Selector desplegable para segmentar países por continente geográfico.</p>
+
+    <div class="evidence__capture-box">
+      <img src="06_interfaz_v_model_region.png" alt="Captura Interfaz v-model región" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        Junto al buscador, se colocó un elemento <code>&lt;select v-model="filtroRegion"&gt;</code> que lista las regiones disponibles (Africa, Americas, Asia, Europe, Oceania). Al seleccionar <strong>"Europe"</strong>, la vista se sincroniza inmediatamente mostrando solo los 3 países europeos: España, Francia y Alemania.
+      </p>
+      <p class="evidence__p">
+        El contador de resultados refleja con precisión <em>"3 países encontrados"</em>, demostrando la reactividad combinada entre el campo de texto y el menú desplegable.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 14</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 6 - V-MODEL (CÓDIGO)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 6 • Directiva v-model</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Filtrado de datos usando v-model
+      <span class="evidence__type-badge badge--code">Código Fuente</span>
+    </h2>
+    <p class="evidence__subtitle">Implementación de v-model y emisión de eventos en SearchBar.vue.</p>
+
+    <div class="evidence__capture-box">
+      <img src="code_06_v_model.png" alt="Captura Código v-model" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        En el componente <code>SearchBar.vue</code>, los controles de entrada utilizan <code>:value</code> y eventos <code>@input</code> / <code>@change</code> que emiten <code>update:busqueda</code> y <code>update:region</code>, implementando el patrón estándar de <code>v-model</code> en componentes de Vue 3.
+      </p>
+      <p class="evidence__p">
+        En el componente padre <code>App.vue</code>, se vinculan directamente mediante <code>v-model:busqueda="busqueda"</code> y <code>v-model:region="filtroRegion"</code>, manteniendo la información bidireccionalmente sincronizada.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 15</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 7 - V-BIND (INTERFAZ)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 7 • Directiva v-bind</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Enlace de atributos usando v-bind
+      <span class="evidence__type-badge badge--ui">Interfaz de Usuario</span>
+    </h2>
+    <p class="evidence__subtitle">Banderas oficiales, accesibilidad y estilos enlazados de forma dinámica.</p>
+
+    <div class="evidence__capture-box">
+      <img src="02_interfaz_v_for.png" alt="Captura Interfaz v-bind" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        Las banderas de cada país son cargadas dinámicamente mediante el atributo <code>:src</code> enlazado a la URL de alta resolución provista por la API. Además, se enlaza <code>:alt="`Bandera de ${pais.nombre}`"</code> garantizando accesibilidad web (SEO y lectores de pantalla).
+      </p>
+      <p class="evidence__p">
+        Adicionalmente, se utilizan enlaces dinámicos para los identificadores HTML únicos <code>:id="`country-${pais.codigoAlpha2}`"</code> y para calcular retardos escalonados en la animación CSS de entrada (<code>:style="{ animationDelay: ... }"</code>).
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 16</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 7 - V-BIND (CÓDIGO)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 7 • Directiva v-bind</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Enlace de atributos usando v-bind
+      <span class="evidence__type-badge badge--code">Código Fuente</span>
+    </h2>
+    <p class="evidence__subtitle">Sintaxis v-bind (abreviatura :) en CountryCard.vue.</p>
+
+    <div class="evidence__capture-box">
+      <img src="code_07_v_bind.png" alt="Captura Código v-bind" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        En <code>src/components/CountryCard.vue</code>, la directiva <code>v-bind</code> se aplica con su sintaxis canónica de dos puntos (<code>:</code>) para los atributos <code>:src="pais.banderaUrl"</code> y <code>:alt="`Bandera de ${pais.nombre}`"</code> en el elemento <code>&lt;img&gt;</code>.
+      </p>
+      <p class="evidence__p">
+        El enlace reactivo asegura que cuando el objeto <code>pais</code> cambia o se actualiza, la imagen y sus metadatos asociados se refrescan automáticamente en el navegador sin intervención imperativa.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 17</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 8 - TRY CATCH (INTERFAZ)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 8 • Manejo de Errores</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Manejo de errores con try / catch
+      <span class="evidence__type-badge badge--ui">Interfaz de Usuario</span>
+    </h2>
+    <p class="evidence__subtitle">Visualización controlada de mensajes ante contingencias de red o API.</p>
+
+    <div class="evidence__capture-box">
+      <img src="03_interfaz_error.png" alt="Captura Interfaz try catch" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        Si la conexión a la API falla o responde con un código de error de red, la aplicación no colapsa ni muestra una pantalla en blanco; el error es capturado por el bloque <code>try / catch</code> y la interfaz renderiza el componente amigable <code>ErrorMessage.vue</code>.
+      </p>
+      <p class="evidence__p">
+        La pantalla despliega el mensaje exacto sugerido en las instrucciones: <strong>"No fue posible obtener los datos de la API"</strong> acompañado de un icono de advertencia y un botón para reintentar la operación.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 18</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 8 - TRY CATCH (CÓDIGO)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 8 • Manejo de Errores</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Manejo de errores con try / catch
+      <span class="evidence__type-badge badge--code">Código Fuente</span>
+    </h2>
+    <p class="evidence__subtitle">Estructura try / catch / finally para captura robusta de excepciones.</p>
+
+    <div class="evidence__capture-box">
+      <img src="code_08_try_catch.png" alt="Captura Código try catch" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        En <code>src/App.vue</code>, la rutina asíncrona de consulta está encapsulada dentro de un bloque <code>try { ... } catch (err) { ... } finally { ... }</code>. Dentro del <code>try</code>, se valida <code>respuesta.ok</code> y se lanzan excepciones explícitas ante códigos HTTP 4xx o 5xx.
+      </p>
+      <p class="evidence__p">
+        El bloque <code>catch</code> registra el error en consola, asigna el mensaje a la variable reactiva <code>error.value</code> y activa el catálogo de contingencia, mientras que el bloque <code>finally</code> garantiza que <code>cargando.value = false</code> se ejecute siempre.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 19</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 9 - GITHUB PAGES (INTERFAZ)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 9 • Despliegue</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Publicación en GitHub Pages
+      <span class="evidence__type-badge badge--ui">Sitio en Vivo</span>
+    </h2>
+    <p class="evidence__subtitle">Aplicación web en producción accesible públicamente vía HTTPS.</p>
+
+    <div class="evidence__capture-box">
+      <img src="07_interfaz_github_pages.png" alt="Captura Sitio en vivo GitHub Pages" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        El proyecto se encuentra publicado y accesible en la red a través del servicio oficial de <strong>GitHub Pages</strong> bajo la dirección web: <a href="https://hownioni.github.io/vue-api-restcountries/" target="_blank"><strong>https://hownioni.github.io/vue-api-restcountries/</strong></a>.
+      </p>
+      <p class="evidence__p">
+        Como se comprueba en la captura de pantalla, todos los recursos estáticos (HTML, CSS compilado, scripts JS empaquetados y banderas SVG/PNG) cargan con código HTTP 200 y certificado de seguridad SSL/TLS activo.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 20</span>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       EVIDENCIA 9 - GITHUB PAGES (CÓDIGO / WORKFLOW)
+       ======================================================== -->
+  <div class="page">
+    <div class="page__header">
+      <span class="page__header-tag">Especificación 9 • Despliegue</span>
+      <span class="page__header-project">vue-api-restcountries</span>
+    </div>
+    <h2 class="evidence__title">
+      Publicación en GitHub Pages
+      <span class="evidence__type-badge badge--code">Configuración y CI/CD</span>
+    </h2>
+    <p class="evidence__subtitle">Ajuste de base path en vite.config.js y automatización con GitHub Actions.</p>
+
+    <div class="evidence__capture-box">
+      <img src="code_09_github_pages.png" alt="Captura Código GitHub Pages" class="evidence__img">
+    </div>
+
+    <div class="evidence__explanation">
+      <div class="evidence__explanation-title">Explicación del cumplimiento</div>
+      <p class="evidence__p">
+        Para asegurar que las rutas relativas funcionen adecuadamente en el subdirectorio de GitHub Pages, se configuró la propiedad <code>base: '/vue-api-restcountries/'</code> dentro de <code>vite.config.js</code>.
+      </p>
+      <p class="evidence__p">
+        Adicionalmente, se configuró el pipeline de Integración y Despliegue Continuo (CI/CD) en <code>.github/workflows/deploy.yml</code>, el cual compila automáticamente el proyecto con <code>npm run build</code> y publica la carpeta <code>dist/</code> cada vez que se realiza un <code>git push</code> a la rama <code>main</code>.
+      </p>
+    </div>
+    <div class="page__footer">
+      <span>Consumo de API con Vue 3</span>
+      <span>Página 21</span>
+    </div>
+  </div>
+
+</body>
+</html>
